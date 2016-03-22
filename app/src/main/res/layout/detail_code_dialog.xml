@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/md_green_400"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="详情"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
+
+    <EditText
+        android:gravity="center"
+        android:id="@+id/detail_code_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_white"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp" />
+
+    <EditText
+        android:gravity="center"
+        android:id="@+id/detail_code_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_white"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp" />
+
+    <EditText
+        android:gravity="center"
+        android:id="@+id/detail_code_other"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_white"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp" />
+
+
+    <TextView
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:id="@+id/detail_code_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_rect_white"
+        android:gravity="center"
+        android:text="更新"
+        android:textColor="@color/md_brown_800"
+        android:textSize="20sp" />
+
+</LinearLayout>

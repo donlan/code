@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="添加密码"
+        android:textColor="@color/md_green_900"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/add_code_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_darkblue"
+        android:hint="标题"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp"
+        android:textColor="@color/md_grey_900" />
+
+    <EditText
+        android:id="@+id/add_code_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_darkblue"
+        android:hint="密码"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp"
+        android:textColor="@color/md_grey_900" />
+
+    <EditText
+        android:id="@+id/add_code_other"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_darkblue"
+        android:hint="备注信息"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp"
+        android:textColor="@color/md_grey_900" />
+
+
+    <TextView
+        android:id="@+id/add_code_done"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_green"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="@color/md_white_1000"
+        android:textSize="20sp" />
+</LinearLayout>

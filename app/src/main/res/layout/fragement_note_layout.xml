@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/activity_noteLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_green_500"
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        >
+
+        <EditText
+            android:id="@+id/note_search_et"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/circle_rect_alph_white"
+            android:gravity="center|start"
+            android:hint="@string/search"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#4D100C"
+            android:typeface="serif" />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/note_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activity_noteLinearLayout"
+        android:background="#ffffff" />
+
+    <TextView
+        android:id="@+id/note_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/circie_blue"
+        android:gravity="center"
+        android:text="+"
+        android:textColor="@color/md_white_1000"
+        android:textSize="24sp" />
+
+</RelativeLayout>

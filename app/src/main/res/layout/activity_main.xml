@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPaper"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            />
+        <include layout="@layout/drawer_left_layout" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+
+    <FrameLayout
+        android:id="@+id/lockLayout"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eeeeee"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lockHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:textColor="#aa000000"
+            android:textSize="20sp" />
+
+        <dong.lan.code.view.LockView
+            android:id="@+id/lockView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:visibility="gone"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="bottom"
+            android:id="@+id/lockSet"
+            android:textColor="@color/md_grey_100"
+            android:text="设置应用锁"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:background="@mipmap/label_bg"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</FrameLayout>
+

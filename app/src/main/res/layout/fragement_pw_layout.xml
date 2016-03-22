@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/activity_mainLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/md_green_500"
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        >
+
+        <EditText
+            android:id="@+id/search_et"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/circle_rect_alph_white"
+            android:gravity="center|start"
+            android:hint="@string/search"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#4D100C"
+            android:typeface="serif" />
+
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_marginTop="58dp"
+        android:id="@+id/code_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/activity_mainLinearLayout"
+            android:background="#ffffff" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/add_code"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/circie_blue"
+        android:gravity="center"
+        android:text="+"
+        android:textColor="@color/md_white_1000"
+        android:textSize="24sp" />
+
+
+    <LinearLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:indeterminate="false"
+            android:indeterminateDrawable="@drawable/progressbar"
+            android:indeterminateDuration="400" />
+    </LinearLayout>
+</RelativeLayout>

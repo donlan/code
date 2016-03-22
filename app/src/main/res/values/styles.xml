@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="AppTheme" parent="BaseAppTheme">
+    </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:listDivider">@drawable/recycle_divider</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/md_green_500</item>
+        <item name="colorPrimaryDark">@color/md_green_800</item>
+        <item name="android:windowBackground">@color/md_white_1000</item>
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+    </style>
+
+    <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/md_white_1000</item>
+        <item name="android:background">@color/md_green_500</item>
+
+    </style>
+
+    <style name="circle_no_size_pading">
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+</resources>

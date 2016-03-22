@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="新建记事"
+        android:textColor="@color/md_green_900"
+        android:textSize="20sp" />
+
+    <EditText
+        android:layout_weight="1"
+        android:minHeight="100dp"
+        android:textColor="@color/md_grey_900"
+        android:id="@+id/add_note_des"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle_rect_alph_darkblue"
+        android:hint="记录..."
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp" />
+
+
+    <TextView
+        android:id="@+id/add_note_done"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_green"
+        android:gravity="center"
+        android:text="OK"
+        android:textColor="@color/md_white_1000"
+        android:textSize="20sp" />
+</LinearLayout>
