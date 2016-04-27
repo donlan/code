@@ -18,17 +18,13 @@
     <EditText
         android:layout_weight="1"
         android:minHeight="100dp"
-        android:textColor="@color/md_grey_900"
         android:id="@+id/add_note_des"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/circle_rect_alph_darkblue"
         android:hint="记录..."
-        android:paddingBottom="6dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="6dp" />
+        style="@style/et_text_bg"
+        />
 
 
     <TextView

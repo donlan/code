@@ -12,6 +12,7 @@ public class CodeDao {
     public static final String COLUMN_COUNT="codeCount";
     public static final String COLUMN_OTHER="other";
     public static final String COLUMN_ASYN="asyn";
+    public static final String COLUMN_DES="des";
 
 
 }

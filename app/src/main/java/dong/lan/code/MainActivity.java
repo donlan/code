@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -40,6 +39,7 @@ import dong.lan.code.fragment.FragmentNote;
 import dong.lan.code.utils.AES;
 import dong.lan.code.utils.SPUtils;
 import dong.lan.code.view.LockView;
+import dong.lan.code.view.MyDrawView;
 
 public class MainActivity extends BaseMainActivity implements View.OnClickListener, LockView.LockPaintFinish, CodeDataListener {
 
@@ -103,7 +103,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPaper);
         lockHint = (TextView) findViewById(R.id.lockHint);
         dataFrom = (TextView) findViewById(R.id.dataFromSD);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        MyDrawView drawerLayout = (MyDrawView) findViewById(R.id.drawerLayout);
         LockView lockView = (LockView) findViewById(R.id.lockView);
         lockToggle = (ToggleButton) findViewById(R.id.lockSwitcher);
         lockToggle.setOnClickListener(this);
@@ -203,19 +203,22 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
                                     code.setDes(line);
                                 }
                                 if (i % 4 == 2) {
-                                    code.setWord(AES.decode(line));
+                                    assert code != null;
+                                    code.setWord(line);
 
                                 }
                                 if (i % 4 == 3) {
-                                    code.setOther(AES.decode(line));
+                                    assert code != null;
+                                    code.setOther(line);
                                 }
                                 if (i % 4 == 0) {
+                                    assert code != null;
                                     code.setCount(Integer.parseInt(line));
                                     codes1.add(code);
                                 }
                             }
                             for (Code code1 : codes1) {
-                                DBManeger.getInstance().saveCode(new Code(code1.getDes(), AES.encode(code1.getWord()), code1.getCount()));
+                                DBManeger.getInstance().saveDecodeCode(new Code(code1.getDes(), code1.getWord(), code1.getCount()));
                             }
                             handler.sendEmptyMessage(FROM);
 
@@ -288,6 +291,11 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         }
     }
 
+
+    public void HelpClick(View v)
+    {
+        new AlertDialog.Builder(this).setTitle("使用帮助").setMessage(R.string.help).show();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

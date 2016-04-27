@@ -10,14 +10,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME ="CODE";
-    public static final int VER =6;
+    public static final int VER =8;
     private static DBHelper instance = null;
     private static  final String CREATE_CODE_TABLE="create table "
             +CodeDao.TABLE_NAME+" ("
             +CodeDao.COLUMN_ID+" integer primary key autoincrement, "
             +CodeDao.COLUMN_CODE+" text, "
             +CodeDao.COLUNMN_WORD+" text, "
-            + CodeDao.COLUMN_OTHER+" text, "
+            +CodeDao.COLUMN_OTHER+" text, "
+            +CodeDao.COLUMN_DES+" text, "
             +CodeDao.COLUMN_ASYN+" integer default 0, "
             +CodeDao.COLUMN_COUNT + " integer default 0);";
 
@@ -56,9 +57,9 @@ public class DBHelper extends SQLiteOpenHelper {
         {
             db.execSQL(CREATE_NOTE_TABLE);
         }
-        if(newVersion==6)
+        if(newVersion==8)
         {
-            db.execSQL("alter table code add column other text");
+            db.execSQL("alter table code add column des text");
             System.out.println("UPDATE");
         }
     }

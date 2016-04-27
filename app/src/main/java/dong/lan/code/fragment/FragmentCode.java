@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -162,9 +163,15 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                 }
 
                 @Override
-                public void onItemLongClick(View view, int pos, int type) {
+                public void onItemLongClick(View view,final int pos, int type) {
                     if (type == 0)
-                        adapter.deleteCode(pos);
+                        new AlertDialog.Builder(getActivity()).setMessage("确定删除吗？")
+                        .setPositiveButton("是的", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                adapter.deleteCode(pos);
+                            }
+                        }).show();
                     else {
                         ClipData clipData = ClipData.newPlainText("text", adapter.getCodeAt(pos).getWord());
                         clipboardManager.setPrimaryClip(clipData);
@@ -186,7 +193,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     private void DetailCode(final Code code, final int pos) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.detail_code_dialog, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.detail_code_dialog,null);
         final EditText name = (EditText) view.findViewById(R.id.detail_code_name);
         final EditText detailCode = (EditText) view.findViewById(R.id.detail_code_pwd);
         final EditText other = (EditText) view.findViewById(R.id.detail_code_other);

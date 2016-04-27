@@ -25,4 +25,29 @@
     </style>
 
 
+    <style name="default_circle_size">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+    <style name="text_color">
+        <item name="android:textColor">@color/md_grey_900</item>
+    </style>
+    <style name="et_text_bg">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textColorHint">@color/md_grey_800</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:background">@drawable/base_et_bg</item>
+    </style>
+    <style name="base_click_btn">
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/circle_rect_green</item>
+        <item name="android:textColor">@color/md_grey_100</item>
+    </style>
 </resources>

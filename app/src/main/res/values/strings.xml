@@ -6,4 +6,5 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="search">搜索</string>
+    <string name="help">1.密码界面长按标题可删除该密码 \n2.长按密码则可以将密码复制到剪切板  \n3.点击备注可以查看或者修改密码</string>
 </resources>

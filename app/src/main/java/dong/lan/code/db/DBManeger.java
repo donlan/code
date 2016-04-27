@@ -122,10 +122,10 @@ public class DBManeger {
             do {
                 Code code = new Code();
                 code.setId(cursor.getInt(id));
-                code.setDes(cursor.getString(des));
                 code.setWord(AES.decode(cursor.getString(word)));
                 code.setCount(cursor.getInt(count));
                 code.setAsyn(cursor.getInt(asyn));
+                code.setDes((cursor.getString(des)));
                 code.setOther(AES.decode(cursor.getString(other)));
                 codes.add(code);
             }while (cursor.moveToNext());
@@ -176,6 +176,25 @@ public class DBManeger {
         values.put(CodeDao.COLUMN_COUNT,code.getCount());
         values.put(CodeDao.COLUMN_OTHER,AES.encode(code.getOther()));
         values.put(CodeDao.COLUMN_ASYN,code.getAsyn());
+        values.put(CodeDao.COLUMN_DES,(code.getDes()));
+        if(db.isOpen())
+        {
+            db.replace(CodeDao.TABLE_NAME,null,values);
+        }
+
+    }
+
+    public synchronized void saveDecodeCode(Code code)
+    {
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CodeDao.COLUMN_CODE,code.getDes());
+        values.put(CodeDao.COLUNMN_WORD,code.getWord());
+        values.put(CodeDao.COLUMN_COUNT,code.getCount());
+        values.put(CodeDao.COLUMN_OTHER,code.getOther());
+        values.put(CodeDao.COLUMN_ASYN,code.getAsyn());
+        values.put(CodeDao.COLUMN_DES,code.getDes());
         if(db.isOpen())
         {
             db.replace(CodeDao.TABLE_NAME,null,values);

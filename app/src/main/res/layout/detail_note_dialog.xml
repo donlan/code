@@ -29,11 +29,12 @@
             android:layout_height="wrap_content" />
         <EditText
             android:singleLine="false"
-            android:background="@null"
+            style="@style/et_text_bg"
             android:layout_marginTop="12dp"
             android:layout_below="@id/dNote_time"
             android:id="@+id/dNote_des"
             android:minHeight="80dp"
+            android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
