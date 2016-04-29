@@ -17,13 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +30,7 @@ import dong.lan.code.bean.Code;
 import dong.lan.code.db.DBManeger;
 import dong.lan.code.fragment.FragmentCode;
 import dong.lan.code.fragment.FragmentNote;
-import dong.lan.code.utils.AES;
+import dong.lan.code.utils.FileUtils;
 import dong.lan.code.utils.SPUtils;
 import dong.lan.code.view.LockView;
 import dong.lan.code.view.MyDrawView;
@@ -44,14 +38,7 @@ import dong.lan.code.view.MyDrawView;
 public class MainActivity extends BaseMainActivity implements View.OnClickListener, LockView.LockPaintFinish, CodeDataListener {
 
 
-    public static final int FROM = 1;
-    public static final int TO = 2;
-    public static final int FROM_DONE = 3;
-    public static final int TO_DONE = 4;
-//    public static final int TO_START = 5;
-//    public static final int TO_BAD = 6;
-    public static final int FROM_START = 7;
-    public static final int FROM_BAD = 8;
+
 
     private String PWD = "";
     private int lock = 0;
@@ -75,7 +62,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         if (Tag == 1) {
             this.codes = codes;
         } else if (Tag == 0) {
-            dataFromSD();
+            FileUtils.dataFromSD(MainActivity.this,dataFrom,codes1,codeLoadListener,codeFile,handler);
         }
     }
 
@@ -132,7 +119,6 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         };
         drawerToggle.syncState();
         drawerLayout.setDrawerListener(drawerToggle);
-
         FragmentCode fragmentCode = new FragmentCode();
         fragmentCode.setCodeDataListener(this);
         FragmentNote fragmentNote = new FragmentNote();
@@ -168,128 +154,16 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
             SPUtils.setFirstUse(false);
             new AlertDialog.Builder(this).setTitle("欢迎使用密码管家")
                     .setIcon(getResources().getDrawable(R.mipmap.logo_60))
-                    .setMessage("使用说明：\n1.左滑是设置菜单，右滑是记事页面。\n2.密码页面，长按标题直接删除密码，长按密码会把密码复制到剪切板，点击标题和密码以外地方则可以修改密码。\n3.记事页面，长按直接删除，点击可以修改记事。\n4.密码页面下拉可以重新排序密码")
+                    .setMessage(R.string.help_tip)
                     .setPositiveButton("开始使用",null).show();
         }
+
     }
 
 
     File sdRoot = Environment.getExternalStorageDirectory();
     File codeFile = new File(sdRoot, "myCode.code");
 
-    /*
-    从SD卡导入数据
-     */
-    private void dataFromSD() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            dataFrom.setEnabled(false);
-            codeLoadListener.onCodeChange(3, null);
-            if (codeFile.exists()) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            handler.sendEmptyMessage(FROM_START);
-                            codes1 = new ArrayList<>();
-                            FileInputStream inputStream = new FileInputStream(codeFile);
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                            String line = null;
-                            int i = 0;
-                            Code code = null;
-                            while ((line = bufferedReader.readLine()) != null) {
-                                i++;
-                                if (i % 4 == 1) {
-                                    code = new Code();
-                                    code.setDes(line);
-                                }
-                                if (i % 4 == 2) {
-                                    assert code != null;
-                                    code.setWord(line);
-
-                                }
-                                if (i % 4 == 3) {
-                                    assert code != null;
-                                    code.setOther(line);
-                                }
-                                if (i % 4 == 0) {
-                                    assert code != null;
-                                    code.setCount(Integer.parseInt(line));
-                                    codes1.add(code);
-                                }
-                            }
-                            for (Code code1 : codes1) {
-                                DBManeger.getInstance().saveDecodeCode(new Code(code1.getDes(), code1.getWord(), code1.getCount()));
-                            }
-                            handler.sendEmptyMessage(FROM);
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            handler.sendEmptyMessage(FROM_BAD);
-
-                        }
-                    }
-                });
-                thread.start();
-            } else {
-                Show("没有已导出的文件");
-                handler.sendEmptyMessage(FROM_DONE);
-            }
-        } else {
-            Show("SD卡不存在");
-            handler.sendEmptyMessage(FROM_DONE);
-            dataFrom.setEnabled(true);
-        }
-    }
-
-    /*
-    导出数据到SD卡
-     */
-
-    private void dataToSD() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            StringBuffer stringBuffer = new StringBuffer();
-            dataTo.setEnabled(false);
-            codes = DBManeger.getInstance().getAllCodes();
-            if (codes == null) {
-                Show("没有保存的密码");
-                return;
-            }
-            for (Code code : codes) {
-                stringBuffer.append(code.getDes());
-                stringBuffer.append("\n");
-                stringBuffer.append(AES.encode(code.getWord()));
-                stringBuffer.append("\n");
-                stringBuffer.append(AES.encode(code.getOther()));
-                stringBuffer.append("\n");
-                stringBuffer.append(code.getCount());
-                stringBuffer.append("\n");
-            }
-            try {
-                if (!codeFile.exists()) {
-                    if (!codeFile.createNewFile()) {
-                        Show("创建导出文件失败");
-                        dataTo.setEnabled(true);
-                    }
-                }
-                Show("开始导出数据");
-                FileWriter fileWriter = new FileWriter(codeFile);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write(stringBuffer.toString());
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                fileWriter.close();
-                Show("导出数据成功");
-                dataTo.setEnabled(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Show("导出数据失败");
-                dataTo.setEnabled(true);
-            }
-        } else {
-            Show("SD卡不存在");
-            dataTo.setEnabled(true);
-        }
-    }
 
 
     public void HelpClick(View v)
@@ -300,10 +174,10 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dataFromSD:
-                dataFromSD();
+                FileUtils.dataFromSD(MainActivity.this,dataFrom,codes1,codeLoadListener,codeFile,handler);
                 break;
             case R.id.dataToSD:
-                dataToSD();
+                FileUtils.dataToSD(MainActivity.this,codeFile,dataTo);
                 break;
             case R.id.reset_pass:
                 reset = true;
@@ -416,32 +290,32 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case FROM:
+                case FileUtils.FROM:
                     if (codes1 == null || codes1.isEmpty()) {
                         codeLoadListener.onCodeChange(4, null);
                         Show("没有数据导入");
                     } else {
-                        codes = new ArrayList<Code>(codes1);
+                        codes = new ArrayList<>(codes1);
                         codeLoadListener.onCodeChange(1, codes);
                         Show("导入完成");
                     }
                     dataFrom.setEnabled(true);
                     break;
-                case TO:
+                case FileUtils.TO:
                     dataTo.setEnabled(true);
                     break;
-                case FROM_START:
+                case FileUtils.FROM_START:
                     Show("开始导入");
                     break;
-                case FROM_BAD:
+                case FileUtils.FROM_BAD:
                     Show("导入失败");
                     codeLoadListener.onCodeChange(4, null);
-                case FROM_DONE:
+                case FileUtils.FROM_DONE:
                     dataFrom.setEnabled(true);
                     codeLoadListener.onCodeChange(4, null);
                     break;
 
-                case TO_DONE:
+                case FileUtils.TO_DONE:
                     dataTo.setEnabled(true);
                     codeLoadListener.onCodeChange(4, null);
                     break;

@@ -16,7 +16,9 @@ import java.util.List;
 import dong.lan.code.R;
 
 /**
- * Created by Dooze on 2015/10/2.
+ * 项目：code
+ * 作者：梁桂栋
+ * 日期： 2015/10/2  05:27.
  */
 public class LockView extends View {
     private Matrix matrix = new Matrix();

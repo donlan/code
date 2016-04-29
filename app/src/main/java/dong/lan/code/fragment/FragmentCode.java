@@ -43,7 +43,6 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     private List<Code> codes = new ArrayList<>();
     private MainRecycleAdapter adapter;
     private MainRecycleAdapter rAdapter;
-    private TextView addCode;
     private EditText searchText;
     private LinearLayout loadingLayout;
     private SwipeRefreshLayout refreshLayout;
@@ -75,7 +74,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         recyclerView.setHasFixedSize(true);
         adapter = new MainRecycleAdapter(getActivity(), null);
         recyclerView.setAdapter(adapter);
-        addCode = (TextView) getView().findViewById(R.id.add_code);
+        TextView addCode = (TextView) getView().findViewById(R.id.add_code);
         searchText = (EditText) getView().findViewById(R.id.search_et);
         loadingLayout = (LinearLayout) getView().findViewById(R.id.loadingLayout);
         addCode.setOnClickListener(this);
