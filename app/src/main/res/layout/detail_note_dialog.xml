@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="12dp"
-    app:contentPadding="16dp"
-    app:cardBackgroundColor="@color/md_white_1000"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/md_white_1000"
+    app:cardElevation="12dp"
+    app:contentPadding="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:textColor="@color/md_white_1000"
             android:id="@+id/dNote_type"
-            android:padding="4dp"
-            android:gravity="center"
-            android:background="@mipmap/label_bg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/label_bg"
+            android:gravity="center"
+            android:padding="4dp"
+            android:textColor="@color/md_white_1000"
+            android:textIsSelectable="true"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/dNote_time"
-            android:layout_alignParentRight="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/dNote_type"
             android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <EditText
-            android:singleLine="false"
-            style="@style/et_text_bg"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/dNote_time"
             android:id="@+id/dNote_des"
-            android:minHeight="80dp"
-            android:padding="8dp"
+            style="@style/et_text_bg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dNote_type"
+            android:layout_marginTop="8dp"
+            android:cursorVisible="true"
+            android:fitsSystemWindows="true"
+            android:gravity="start|center"
+            android:inputType="textMultiLine"
+            android:overScrollMode="always"
+            android:padding="8dp"
+            android:minHeight="80dp"
+            android:singleLine="false" />
 
         <Button
             android:id="@+id/reedit_button"
-            android:textSize="20sp"
-            android:textColor="@color/md_white_1000"
-            android:gravity="center"
-            android:text="OK"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/selector_done_button"
-            />
+            android:layout_below="@id/dNote_des"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/basic_click"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/md_white_1000"
+            android:textSize="20sp" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

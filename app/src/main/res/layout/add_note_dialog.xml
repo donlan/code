@@ -11,10 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="新建记事"
+        android:text="@string/new_note"
         android:textColor="@color/md_green_900"
         android:textSize="20sp" />
-
+    <EditText
+        android:id="@+id/add_note_type"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/write_note_type"
+        style="@style/et_text_bg"
+        />
     <EditText
         android:layout_weight="1"
         android:minHeight="100dp"
@@ -22,20 +29,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
-        android:hint="记录..."
+        android:hint="@string/write_note_hit"
         style="@style/et_text_bg"
         />
 
 
     <TextView
         android:id="@+id/add_note_done"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:background="@drawable/circle_green"
+        android:background="@drawable/basic_click"
         android:gravity="center"
-        android:text="OK"
+        android:text="@string/ok"
         android:textColor="@color/md_white_1000"
         android:textSize="20sp" />
 </LinearLayout>

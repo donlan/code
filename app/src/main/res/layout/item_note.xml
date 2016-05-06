@@ -26,7 +26,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:layout_marginTop="4dp"
-                android:background="@mipmap/label_bg"
+                android:background="@drawable/label_bg"
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/md_grey_50" />

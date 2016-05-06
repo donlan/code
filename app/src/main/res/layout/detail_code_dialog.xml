@@ -53,6 +53,7 @@
         android:layout_height="@dimen/input_height"
         android:layout_marginTop="12dp"
         style="@style/et_text_bg"
+        android:inputType="textMultiLine"
         android:paddingBottom="6dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -62,11 +63,11 @@
     <TextView
        style="@style/base_click_btn"
         android:id="@+id/detail_code_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="16dp"
-        android:text="更新"
+        android:text="@string/update"
         />
 
 </LinearLayout>
