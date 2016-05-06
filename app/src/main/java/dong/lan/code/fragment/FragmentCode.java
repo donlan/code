@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -33,9 +34,12 @@ import dong.lan.code.adapter.MainRecycleAdapter;
 import dong.lan.code.bean.Code;
 import dong.lan.code.db.DBManeger;
 import dong.lan.code.utils.DividerItemDecoration;
+import dong.lan.code.utils.MyItemTouchHelper;
 
 /**
- * Created by Dooze on 2015/10/30.
+ * 项目：code
+ * 作者：梁桂栋
+ * 日期： 2015/10/30  02:32.
  */
 public class FragmentCode extends BaseFragment implements View.OnClickListener, onCodeLoadListener {
 
@@ -51,6 +55,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     private ClipboardManager clipboardManager = null;
 
     CodeDataListener codeDataListener;
+    private MyItemTouchHelper callback;
 
     public void setCodeDataListener(CodeDataListener listenner) {
         codeDataListener = listenner;
@@ -74,7 +79,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         recyclerView.setHasFixedSize(true);
         adapter = new MainRecycleAdapter(getActivity(), null);
         recyclerView.setAdapter(adapter);
-        TextView addCode = (TextView) getView().findViewById(R.id.add_code);
+        final TextView addCode = (TextView) getView().findViewById(R.id.add_code);
         searchText = (EditText) getView().findViewById(R.id.search_et);
         loadingLayout = (LinearLayout) getView().findViewById(R.id.loadingLayout);
         addCode.setOnClickListener(this);
@@ -121,7 +126,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
             @Override
             public void afterTextChanged(Editable p1) {
                 if (!searchText.getText().toString().equals("")) {
-                    List<Code> c = new ArrayList<>();
+                    List<Code> c ;
                     c = DBManeger.getInstance().getSeachCodes(searchText.getText().toString());
                     if (c != null) {
                         rAdapter.delAddAll(c);
@@ -129,6 +134,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                         rAdapter.notifyDataSetChanged();
                         isSearch = true;
                         resetAdapter = false;
+                        callback.setTouchListener(rAdapter);
                     } else {
                         Show("没有搜索结果");
                         resetAdapter = false;
@@ -141,6 +147,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                 if (resetAdapter) {
                     //设置item的点击监听
                     recyclerView.setAdapter(adapter);
+                    callback.setTouchListener(adapter);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -187,6 +194,13 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         //设置item的添加删除的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //拖动排序 与删除， 绑定到recyclerView
+        callback = new MyItemTouchHelper(adapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
+
+
     }
 
     private void DetailCode(final Code code, final int pos) {
@@ -258,6 +272,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                         Code c = new Code(name.getText().toString(), code.getText().toString(), other.getText().toString(),count);
                         c.setAsyn(0);
                         adapter.addCode(0, c);
+                        recyclerView.scrollToPosition(0);
                         dialog.dismiss();
                     }
                 });
@@ -266,8 +281,16 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         }
     }
 
-
-    @Override
+    /*
+    密码改变的回调
+    Tag:
+    0 本地导入的回调
+    1 导入加载的所有密码
+    2 密码搜索回调
+    3 本地导入的加载动画开始
+    4 本地导入的加载动画关闭
+     */
+        @Override
     public void onCodeChange(int Tag, List<Code> codes) {
         if (Tag == 0) {
             codeDataListener.onCodeDataGet(1, this.codes);
