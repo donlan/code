@@ -12,7 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="?attr/colorPrimary"
-        app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar" >
+        <RadioGroup
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RadioButton
+                android:id="@+id/bar_code"
+                android:button="@null"
+                android:textSize="16sp"
+                android:checked="true"
+                android:background="@drawable/bg_left_raduis"
+                android:text="@string/password"
+                android:textColor="@color/md_white_1000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/bar_note"
+                android:textSize="16sp"
+                android:button="@null"
+                android:background="@drawable/bg_right_raduis"
+                android:text="@string/note"
+                android:textColor="@color/md_white_1000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+    </android.support.v7.widget.Toolbar>
 
     <dong.lan.code.view.MyDrawView
         android:id="@+id/drawerLayout"
@@ -28,7 +54,6 @@
         <include layout="@layout/drawer_left_layout" />
 
     </dong.lan.code.view.MyDrawView>
-
 
     <FrameLayout
         android:id="@+id/lockLayout"
@@ -58,10 +83,10 @@
             android:layout_gravity="bottom"
             android:id="@+id/lockSet"
             android:textColor="@color/md_grey_100"
-            android:text="设置应用锁"
+            android:text="@string/set_app_lock"
             android:textSize="20sp"
             android:gravity="center"
-            android:background="@mipmap/label_bg"
+            android:background="@drawable/label_bg"
             android:layout_marginRight="24dp"
             android:layout_marginLeft="24dp"
             android:paddingBottom="8dp"
@@ -69,5 +94,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </FrameLayout>
+
 </FrameLayout>
 
