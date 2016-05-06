@@ -3,6 +3,8 @@ package dong.lan.code.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import dong.lan.code.Interface.ItemTouchListener;
 import dong.lan.code.R;
 import dong.lan.code.bean.Code;
 import dong.lan.code.db.CodeDao;
@@ -21,13 +24,44 @@ import dong.lan.code.db.DBManeger;
 import dong.lan.code.utils.AES;
 
 /**
- * Created by Dooze on 2015/9/20.
+ * 项目：code
+ * 作者：梁桂栋
+ * 日期： 2015/9/20  16:21.
  */
-public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.CodeHolder> {
+public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.CodeHolder> implements ItemTouchListener{
 
     private LayoutInflater inflater;
-    private Context context;
     private List<Code> codes;
+    private Context context;
+
+    @Override
+    public void onItemMoved(int fromPos, int toPos) {
+        ContentValues values = new ContentValues();
+        int fromCount = codes.get(fromPos).getCount();
+        int toCount = codes.get(toPos).getCount();
+        codes.get(fromPos).setCount(toCount-1);
+        codes.get(toPos).setCount(fromCount+1);
+        values.put(CodeDao.COLUMN_COUNT, codes.get(fromPos).getCount());
+        DBManeger.getInstance().updateCode(values, String.valueOf(codes.get(fromPos).getId()));
+        values.clear();
+        values.put(CodeDao.COLUMN_COUNT, codes.get(toPos).getCount());
+        DBManeger.getInstance().updateCode(values, String.valueOf(codes.get(toPos).getId()));
+        notifyItemMoved(fromPos,toPos);
+    }
+
+    @Override
+    public void onItemSwiped(final int pos) {
+        new AlertDialog.Builder(context)
+                .setTitle("确定要删除该密码？")
+                .setMessage(codes.get(pos).getDes())
+                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteCode(pos);
+                    }
+                }).show();
+            notifyItemChanged(pos);
+    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int pos);
@@ -56,9 +90,6 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         return new CodeHolder(view);
     }
 
-    private static long firstTime;
-    private static int POS = -1;
-    private static boolean VISIT = false;
 
     @Override
     public void onBindViewHolder(final CodeHolder codeHolder, final int pos) {
@@ -69,26 +100,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
             codeHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (firstTime + 500 > System.currentTimeMillis()) {
-                        if (VISIT) {
-                            codeHolder.word.setVisibility(View.GONE);
-                            VISIT = false;
-                        } else {
-                            codeHolder.word.setVisibility(View.VISIBLE);
-                            VISIT = true;
-                        }
-                    } else {
-                        onItemClickListener.onItemClick(codeHolder.itemView, codeHolder.getPosition());
-                    }
-                    firstTime = System.currentTimeMillis();
-                }
-            });
-
-            codeHolder.des.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    onItemClickListener.onItemLongClick(codeHolder.itemView, codeHolder.getPosition(), 0);
-                    return false;
+                    onItemClickListener.onItemClick(codeHolder.itemView, codeHolder.getPosition());
                 }
             });
             codeHolder.word.setOnLongClickListener(new View.OnLongClickListener() {
@@ -104,15 +116,15 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
 
     @Override
     public int getItemCount() {
-        if(codes==null)
+        if (codes == null)
             return 0;
         return codes.size();
     }
 
 
     public void addCode(int pos, Code code) {
-        if(codes==null)
-            codes= new ArrayList<>();
+        if (codes == null)
+            codes = new ArrayList<>();
         codes.add(pos, code);
         notifyItemInserted(pos);
         DBManeger.getInstance().saveCode(code);
@@ -130,10 +142,9 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Code> codes)
-    {
-        if(this.codes==null)
-            this.codes= new ArrayList<>();
+    public void addAll(List<Code> codes) {
+        if (this.codes == null)
+            this.codes = new ArrayList<>();
         this.codes.addAll(codes);
     }
 
@@ -153,13 +164,13 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         notifyDataSetChanged();
     }
 
-    public void refresh()
-    {
-        if(codes==null)
+    public void refresh() {
+        if (codes == null)
             return;
         Collections.sort(codes);
         notifyDataSetChanged();
     }
+
     public void deleteCode(int pos) {
         DBManeger.getInstance().deleteCode(codes.get(pos).getDes());
         codes.remove(pos);
