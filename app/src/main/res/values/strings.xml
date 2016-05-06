@@ -8,4 +8,16 @@
     <string name="search">搜索</string>
     <string name="help">1.密码界面长按标题可删除该密码 \n2.长按密码则可以将密码复制到剪切板  \n3.点击备注可以查看或者修改密码</string>
     <string name="help_tip">"使用说明：\n1.左滑是设置菜单，右滑是记事页面。\n2.密码页面，长按标题直接删除密码，长按密码会把密码复制到剪切板，点击标题和密码以外地方则可以修改密码。\n3.记事页面，长按直接删除，点击可以修改记事。\n4.密码页面下拉可以重新排序密码"</string>
+    <string name="ok">完成</string>
+    <string name="tittle">标题</string>
+    <string name="password">密码</string>
+    <string name="other_info">备注信息</string>
+    <string name="new_note">新建记事</string>
+    <string name="write_note_hit">记录...</string>
+    <string name="update">更新</string>
+    <string name="write_note_type">10汉字以内的自定义类型</string>
+    <string name="add_code">添加密码</string>
+    <string name="set_alert_time">设置提醒的时间</string>
+    <string name="set_app_lock">设置应用锁</string>
+    <string name="note">记事</string>
 </resources>
