@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by Dooze on 2015/10/31.
+ * 项目：code
+ * 作者：梁桂栋
+ * 日期： 2015/10/31  02:43.
  */
 public class Note implements Parcelable {
 
