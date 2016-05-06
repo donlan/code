@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -38,8 +39,7 @@ import dong.lan.code.view.MyDrawView;
 public class MainActivity extends BaseMainActivity implements View.OnClickListener, LockView.LockPaintFinish, CodeDataListener {
 
 
-
-
+    public static boolean LOCK_STATUS = true;
     private String PWD = "";
     private int lock = 0;
     private boolean reset = false;
@@ -50,19 +50,20 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     private TextView dataFrom;
     private TextView dataTo;
     private TextView lockHint;
-    private Toolbar toolbar;
+    private RadioButton radioCode;
+    private RadioButton radioNote;
     private FrameLayout lockLayout;
     private List<Code> codes = new ArrayList<>();
     private List<Code> codes1;
     private ArrayList<Fragment> fragments = new ArrayList<>();
-//    private int curIndex = 0;
+    private ViewPager viewPager;
 
     @Override
     public void onCodeDataGet(int Tag, List<Code> codes) {
         if (Tag == 1) {
             this.codes = codes;
         } else if (Tag == 0) {
-            FileUtils.dataFromSD(MainActivity.this,dataFrom,codes1,codeLoadListener,codeFile,handler);
+            FileUtils.dataFromSD(MainActivity.this, dataFrom, codes1, codeLoadListener, codeFile, handler);
         }
     }
 
@@ -78,6 +79,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     public static void setOnNoteChangeListenner(OnNoteChangeListener changeListener) {
         noteChangeListener = changeListener;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,18 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         SharedPreferences preferences = this.getSharedPreferences("CODE_SP", MODE_PRIVATE);
 
         SPUtils.init(preferences);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPaper);
+
+        initView();
+
+    }
+
+
+    File sdRoot = Environment.getExternalStorageDirectory();
+    File codeFile = new File(sdRoot, "myCode.code");
+
+
+    private void initView(){
+        viewPager = (ViewPager) findViewById(R.id.viewPaper);
         lockHint = (TextView) findViewById(R.id.lockHint);
         dataFrom = (TextView) findViewById(R.id.dataFromSD);
         MyDrawView drawerLayout = (MyDrawView) findViewById(R.id.drawerLayout);
@@ -102,9 +115,13 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         findViewById(R.id.lockSwitcher).setOnClickListener(this);
         findViewById(R.id.reset_pass).setOnClickListener(this);
         lockLayout = (FrameLayout) findViewById(R.id.lockLayout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("密码");
-        toolbar.setTitleTextColor(Color.WHITE);
+        radioCode = (RadioButton) findViewById(R.id.bar_code);
+        radioNote = (RadioButton) findViewById(R.id.bar_note);
+        radioNote.setOnClickListener(this);
+        radioCode.setOnClickListener(this);
+        radioCode.setTextColor(Color.BLACK);
+        radioNote.setTextColor(Color.WHITE);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
@@ -136,10 +153,14 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        toolbar.setTitle("密码");
+                        radioCode.setChecked(true);
+                        radioCode.setTextColor(Color.BLACK);
+                        radioNote.setTextColor(Color.WHITE);
                         break;
                     case 1:
-                        toolbar.setTitle("记事");
+                        radioNote.setChecked(true);
+                        radioCode.setTextColor(Color.WHITE);
+                        radioNote.setTextColor(Color.BLACK);
                         break;
                 }
             }
@@ -149,35 +170,42 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
 
             }
         });
-        if(SPUtils.isFirstUse())
-        {
+        if (SPUtils.isFirstUse()) {
             SPUtils.setFirstUse(false);
             new AlertDialog.Builder(this).setTitle("欢迎使用密码管家")
                     .setIcon(getResources().getDrawable(R.mipmap.logo_60))
                     .setMessage(R.string.help_tip)
-                    .setPositiveButton("开始使用",null).show();
+                    .setPositiveButton("开始使用", null).show();
         }
 
+        if (SPUtils.getLockStatus() && !SPUtils.LockPWD().equals(""))
+            lockLayout.setVisibility(View.VISIBLE);
+        else
+            lockLayout.setVisibility(View.GONE);
     }
 
-
-    File sdRoot = Environment.getExternalStorageDirectory();
-    File codeFile = new File(sdRoot, "myCode.code");
-
-
-
-    public void HelpClick(View v)
-    {
+    public void HelpClick(View v) {
         new AlertDialog.Builder(this).setTitle("使用帮助").setMessage(R.string.help).show();
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.bar_code:
+                viewPager.setCurrentItem(0);
+                radioCode.setTextColor(Color.BLACK);
+                radioNote.setTextColor(Color.WHITE);
+                break;
+            case R.id.bar_note:
+                viewPager.setCurrentItem(1);
+                radioCode.setTextColor(Color.WHITE);
+                radioNote.setTextColor(Color.BLACK);
+                break;
             case R.id.dataFromSD:
-                FileUtils.dataFromSD(MainActivity.this,dataFrom,codes1,codeLoadListener,codeFile,handler);
+                FileUtils.dataFromSD(MainActivity.this, dataFrom, codes1, codeLoadListener, codeFile, handler);
                 break;
             case R.id.dataToSD:
-                FileUtils.dataToSD(MainActivity.this,codeFile,dataTo);
+                FileUtils.dataToSD(MainActivity.this, codeFile, dataTo);
                 break;
             case R.id.reset_pass:
                 reset = true;
@@ -218,18 +246,9 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (SPUtils.getLockStatus() && !SPUtils.LockPWD().equals(""))
-            lockLayout.setVisibility(View.VISIBLE);
-        else
-            lockLayout.setVisibility(View.GONE);
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
-        if (SPUtils.getLockStatus() && !SPUtils.LockPWD().equals(""))
+        if (LOCK_STATUS && SPUtils.getLockStatus() && !SPUtils.LockPWD().equals(""))
             lockLayout.setVisibility(View.VISIBLE);
     }
 
@@ -242,6 +261,9 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         if (!reset && pwd.equals(SPUtils.LockPWD())) {
             lockHint.setText("");
             lockLayout.setVisibility(View.GONE);
+        } else {
+            lockHint.setText("密码不对 ^_^ ");
+            return;
         }
         if (lock == 1) {
             reset = true;
@@ -249,7 +271,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
             lockLayout.setVisibility(View.GONE);
             SPUtils.saveLockStatus(false);
             lockHint.setText("");
-            lock=0;
+            lock = 0;
             loop = 0;
         }
 
