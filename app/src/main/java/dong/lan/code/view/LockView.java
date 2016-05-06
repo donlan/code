@@ -69,6 +69,7 @@ public class LockView extends View {
         if (!isInit) {
             initPoint();
         }
+
         paint2Cavans(canvas);
 
         if (pointList.size() > 0) {
@@ -88,6 +89,7 @@ public class LockView extends View {
     绘制解锁点
      */
     private void paint2Cavans(Canvas canvas) {
+
         for (int i = 0; i < points.length; i++) {
             for (int j = 0; j < points[i].length; j++) {
                 Point point = points[i][j];
@@ -133,11 +135,11 @@ public class LockView extends View {
             h = w;
         }
 
-        pointNormal = BitmapFactory.decodeResource(getResources(), R.mipmap.point_nomal);
-        pointPress = BitmapFactory.decodeResource(getResources(), R.mipmap.point_press);
-        pointError = BitmapFactory.decodeResource(getResources(), R.mipmap.point_error);
-        lineNormal = BitmapFactory.decodeResource(getResources(), R.mipmap.line_normal);
-        lineError = BitmapFactory.decodeResource(getResources(), R.mipmap.line_error);
+        pointNormal = BitmapFactory.decodeResource(getResources(), R.drawable.point_nomal);
+        pointPress = BitmapFactory.decodeResource(getResources(), R.drawable.point_press);
+        pointError = BitmapFactory.decodeResource(getResources(), R.drawable.point_error);
+        lineNormal = BitmapFactory.decodeResource(getResources(), R.drawable.line_normal);
+        lineError = BitmapFactory.decodeResource(getResources(), R.drawable.line_error);
 
         raduis = pointError.getWidth() / 2;
 
