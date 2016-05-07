@@ -185,7 +185,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     }
 
     public void HelpClick(View v) {
-        new AlertDialog.Builder(this).setTitle("使用帮助").setMessage(R.string.help).show();
+        new AlertDialog.Builder(this).setTitle("使用帮助").setMessage(R.string.help_tip).show();
     }
 
     @Override
