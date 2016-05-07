@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="draw_layout" type="layout">@layout/drawer_left_layout</item>
+</resources>

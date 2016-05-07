@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
     android:layout_gravity="start">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/md_white_1000"
-        android:gravity="start"
-        android:orientation="vertical">
-
-
         <TextView
             android:id="@+id/dataFromSD"
             android:layout_width="match_parent"
@@ -76,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:background="#00ffffff"
                 android:gravity="center"
-                android:text="应用锁"
+                android:text="@string/app_lock"
                 android:textColor="#99000000"
                 android:textSize="20sp" />
 
@@ -98,7 +91,7 @@
             android:background="@null"
             android:gravity="start"
             android:padding="16dp"
-            android:text="重置密码"
+            android:text="@string/reset_password"
             android:textSize="20sp" />
 
         <View
@@ -112,7 +105,7 @@
             android:layout_height="wrap_content"
             android:onClick="HelpClick"
             android:padding="16dp"
-            android:text="使用帮助"
+            android:text="@string/use_help"
             android:textSize="20sp"
             android:textStyle="bold"
             android:typeface="sans" />
@@ -131,9 +124,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="如有问题或建议请联系\nQQ：760625325"
+            android:text="@string/contact"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="sans" />
     </LinearLayout>
-</ScrollView>
