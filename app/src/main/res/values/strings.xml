@@ -6,18 +6,30 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="search">搜索</string>
-    <string name="help">1.密码界面长按标题可删除该密码 \n2.长按密码则可以将密码复制到剪切板  \n3.点击备注可以查看或者修改密码</string>
-    <string name="help_tip">"使用说明：\n1.左滑是设置菜单，右滑是记事页面。\n2.密码页面，长按标题直接删除密码，长按密码会把密码复制到剪切板，点击标题和密码以外地方则可以修改密码。\n3.记事页面，长按直接删除，点击可以修改记事。\n4.密码页面下拉可以重新排序密码"</string>
+    <string name="help_tip">"使用说明：\n1.左滑是设置菜单，右滑是记事页面。\n2.密码页面，从左往右活动删除
+        密码，长按密码会把密码复制到剪切板，同时长按可以给密码重新排序。\n3.记事页面，长按直接删除或者添加闹
+        钟提醒，点击可以修改记事。\n4.密码页面下拉刷新可以重新排序密码.\n4.记事提醒时会在通知栏显示，点击提醒的
+        记事即可关闭提醒"</string>
     <string name="ok">完成</string>
     <string name="tittle">标题</string>
     <string name="password">密码</string>
     <string name="other_info">备注信息</string>
     <string name="new_note">新建记事</string>
-    <string name="write_note_hit">记录...</string>
+    <string name="write_note_hit">记录…</string>
     <string name="update">更新</string>
     <string name="write_note_type">10汉字以内的自定义类型</string>
     <string name="add_code">添加密码</string>
     <string name="set_alert_time">设置提醒的时间</string>
     <string name="set_app_lock">设置应用锁</string>
     <string name="note">记事</string>
+    <string name="import_to_sdcard_tip">当应用卸载后重新导入导出在SDCard的备份密码，已导入的情况下导入会使得密码重复</string>
+    <string name="export_to_sdcard_tip">将当前应用中的密码加密后到出到SDCard，重复导出会覆盖之前的密码</string>
+    <string name="export_to_sdcard">导出数据到SD卡</string>
+    <string name="import_to_sdcard">从SD卡导入数据</string>
+    <string name="use_help">使用帮助</string>
+    <string name="reset_password">重置密码</string>
+    <string name="app_lock">应用锁</string>
+    <string name="contact">如有问题或建议请联系\nQQ：760625325</string>
+    <string name="date">日期</string>
+    <string name="time">时刻</string>
 </resources>
