@@ -20,7 +20,7 @@ import dong.lan.code.Interface.ItemTouchListener;
 import dong.lan.code.R;
 import dong.lan.code.bean.Code;
 import dong.lan.code.db.CodeDao;
-import dong.lan.code.db.DBManeger;
+import dong.lan.code.db.DBManager;
 import dong.lan.code.utils.AES;
 
 /**
@@ -39,13 +39,19 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         ContentValues values = new ContentValues();
         int fromCount = codes.get(fromPos).getCount();
         int toCount = codes.get(toPos).getCount();
+
         codes.get(fromPos).setCount(toCount-1);
         codes.get(toPos).setCount(fromCount+1);
+
         values.put(CodeDao.COLUMN_COUNT, codes.get(fromPos).getCount());
-        DBManeger.getInstance().updateCode(values, String.valueOf(codes.get(fromPos).getId()));
+        DBManager.getInstance().updateCode(values, String.valueOf(codes.get(fromPos).getId()));
         values.clear();
+
         values.put(CodeDao.COLUMN_COUNT, codes.get(toPos).getCount());
-        DBManeger.getInstance().updateCode(values, String.valueOf(codes.get(toPos).getId()));
+        DBManager.getInstance().updateCode(values, String.valueOf(codes.get(toPos).getId()));
+        Code code = codes.get(fromPos);
+        codes.set(fromPos,codes.get(toPos));
+        codes.set(toPos,code);
         notifyItemMoved(fromPos,toPos);
     }
 
@@ -127,7 +133,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
             codes = new ArrayList<>();
         codes.add(pos, code);
         notifyItemInserted(pos);
-        DBManeger.getInstance().saveCode(code);
+        DBManager.getInstance().saveCode(code);
 
 
     }
@@ -155,7 +161,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         values.put(CodeDao.COLUMN_CODE, code.getDes());
         values.put(CodeDao.COLUNMN_WORD, AES.encode(code.getWord()));
         values.put(CodeDao.COLUMN_OTHER, AES.encode(code.getOther()));
-        DBManeger.getInstance().updateCode(values, id);
+        DBManager.getInstance().updateCode(values, id);
         codes.get(pos).setCount(code.getCount());
         codes.get(pos).setDes(code.getDes());
         codes.get(pos).setWord(code.getWord());
@@ -172,7 +178,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
     }
 
     public void deleteCode(int pos) {
-        DBManeger.getInstance().deleteCode(codes.get(pos).getDes());
+        DBManager.getInstance().deleteCode(codes.get(pos).getDes());
         codes.remove(pos);
         notifyItemRemoved(pos);
     }
@@ -181,7 +187,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         if (pos < codes.size() - 1) {
             ContentValues v = new ContentValues();
             v.put(CodeDao.COLUMN_COUNT, codes.get(pos + 1).getCount() + (plus ? 1 : -1));
-            DBManeger.getInstance().updateCode(v, codes.get(pos).getId() + "");
+            DBManager.getInstance().updateCode(v, codes.get(pos).getId() + "");
         }
     }
 
