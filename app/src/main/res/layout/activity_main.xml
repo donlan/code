@@ -23,20 +23,20 @@
                 android:button="@null"
                 android:textSize="16sp"
                 android:checked="true"
-                android:background="@drawable/bg_left_raduis"
+                android:background="@drawable/bg_left_radius"
                 android:text="@string/password"
                 android:textColor="@color/md_white_1000"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="35dp" />
             <RadioButton
                 android:id="@+id/bar_note"
                 android:textSize="16sp"
                 android:button="@null"
-                android:background="@drawable/bg_right_raduis"
+                android:background="@drawable/bg_right_radius"
                 android:text="@string/note"
                 android:textColor="@color/md_white_1000"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="35dp" />
         </RadioGroup>
     </android.support.v7.widget.Toolbar>
 
@@ -51,11 +51,11 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             />
-        <include layout="@layout/drawer_left_layout" />
+        <include layout="@layout/draw_layout" />
 
     </dong.lan.code.view.MyDrawView>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/lockLayout"
         android:focusable="true"
         android:layout_width="match_parent"
@@ -74,6 +74,7 @@
 
         <dong.lan.code.view.LockView
             android:id="@+id/lockView"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -93,7 +94,7 @@
             android:paddingTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </FrameLayout>
+    </LinearLayout>
 
 </FrameLayout>
 
