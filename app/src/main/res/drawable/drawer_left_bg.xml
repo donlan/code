@@ -6,6 +6,4 @@
         android:centerColor="@color/md_green_100"
         android:endColor="@color/md_green_50"
         android:startColor="@color/md_green_200" />
-
-
 </shape>
