@@ -13,11 +13,14 @@ import dong.lan.code.bean.Note;
 import dong.lan.code.utils.AES;
 
 /**
- * Created by Dooze on 2015/9/20.
+ * 项目：code
+ * 作者：梁桂栋
+ * 日期： 2015/9/20  20:54.
+ * Email:760625325@qq.com
  */
-public class DBManeger {
+public class DBManager {
 
-    private static DBManeger maneger = new DBManeger();
+    private static DBManager manager = new DBManager();
     private static DBHelper helper;
 
     public static void onInit(Context context)
@@ -27,9 +30,9 @@ public class DBManeger {
     }
 
 
-    public static synchronized  DBManeger getInstance()
+    public static synchronized DBManager getInstance()
     {
-        return maneger;
+        return manager;
     }
 
     public synchronized  void saveNote(Note note)
@@ -70,7 +73,7 @@ public class DBManeger {
         cursor.close();
         return notes;
     }
-    public synchronized List<Note> getSeachNotes(String des)
+    public synchronized List<Note> getSearchNotes(String des)
     {
         SQLiteDatabase db = helper.getReadableDatabase();
 
@@ -95,7 +98,7 @@ public class DBManeger {
         return notes;
     }
 
-    public synchronized void undateNote(ContentValues values,String time)
+    public synchronized void updateNote(ContentValues values, String time)
     {
         SQLiteDatabase db = helper.getWritableDatabase();
         if(db.isOpen())
@@ -134,7 +137,7 @@ public class DBManeger {
         return codes;
     }
 
-	public synchronized List<Code> getSeachCodes(String des)
+	public synchronized List<Code> getSearchCodes(String des)
     {
         SQLiteDatabase db = helper.getReadableDatabase();
 
