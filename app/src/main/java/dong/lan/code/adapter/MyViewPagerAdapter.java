@@ -7,7 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by Dooze on 2015/10/31.
+ * 项目：  code
+ * 作者：  梁桂栋
+ * 日期：  2015/10/31  20:56.
+ * Email: 760625325@qq.com
  */
 public class MyViewPagerAdapter extends FragmentPagerAdapter {
     ArrayList<Fragment> fragments;

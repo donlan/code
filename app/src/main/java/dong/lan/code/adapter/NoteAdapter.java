@@ -14,7 +14,7 @@ import java.util.List;
 import dong.lan.code.Interface.NoteItemClickListener;
 import dong.lan.code.R;
 import dong.lan.code.bean.Note;
-import dong.lan.code.db.DBManeger;
+import dong.lan.code.db.DBManager;
 import dong.lan.code.db.NoteDao;
 import dong.lan.code.fragment.FragmentNote;
 
@@ -50,7 +50,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         noteHolder.type.setText(notes.get(i).getType());
         noteHolder.time.setText(notes.get(i).getTime());
         noteHolder.note.setText(notes.get(i).getNote());
-        noteHolder.note.setOnClickListener(new View.OnClickListener() {
+        noteHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (noteItemClickListener != null) {
@@ -62,7 +62,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
                 }
             }
         });
-        noteHolder.note.setOnLongClickListener(new View.OnLongClickListener() {
+        noteHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 noteItemClickListener.onNoteLongClick(notes.get(noteHolder.getPosition()),noteHolder.getPosition());
@@ -99,7 +99,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         ContentValues values = new ContentValues();
         values.put(NoteDao.COLUMN_TIME, note.getTime());
         values.put(NoteDao.COLUMN_NOTE,note.getNote());
-        DBManeger.getInstance().undateNote(values, oldTime);
+        DBManager.getInstance().updateNote(values, oldTime);
         notes.set(pos,note);
         notifyItemChanged(pos);
     }
@@ -107,13 +107,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
     {
         if(notes==null)
             notes = new ArrayList<>();
-        DBManeger.getInstance().saveNote(note);
+        DBManager.getInstance().saveNote(note);
         notes.add(0, note);
         notifyItemInserted(0);
     }
     public void deleteNote(int pos)
     {
-        DBManeger.getInstance().deleteNote(notes.get(pos).getTime());
+        DBManager.getInstance().deleteNote(notes.get(pos).getTime());
         notes.remove(pos);
         notifyItemRemoved(pos);
     }
