@@ -19,13 +19,13 @@ public class TimeUtil {
 	public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm";
 	public final static String FORMAT_DATE1_TIME = "yyyy/MM/dd HH:mm";
 	public final static String FORMAT_DATE_TIME_SECOND = "yyyy/MM/dd HH:mm:ss";
-	public final  static String FORMAT_DATA_TIME_SECOND_1 = "yyyy-MM-dd HH:mm:ss";
+	public final  static String FORMAT_DATA_TIME_SECOND_1 = "yyyy年MM月dd日 HH:mm:ss";
 	private static SimpleDateFormat sdf = new SimpleDateFormat();
-	private static final int YEAR = 365 * 24 * 60 * 60;// 年
-	private static final int MONTH = 30 * 24 * 60 * 60;// 月
-	private static final int DAY = 24 * 60 * 60;// 天
-	private static final int HOUR = 60 * 60;// 小时
-	private static final int MINUTE = 60;// 分钟
+	public static final int YEAR = 365 * 24 * 60 * 60;// 年
+	public static final int MONTH = 30 * 24 * 60 * 60;// 月
+	public static final int DAY = 24 * 60 * 60;// 天
+	public static final int HOUR = 60 * 60;// 小时
+	public static final int MINUTE = 60;// 分钟
 
 	/**
 	 * 根据时间戳获取描述性时间，如3分钟前，1天前
@@ -37,7 +37,6 @@ public class TimeUtil {
 	public static String getDescriptionTimeFromTimestamp(long timestamp) {
 		long currentTime = System.currentTimeMillis();
 		long timeGap = (currentTime - timestamp) / 1000;// 与现在时间相差秒数
-		System.out.println("timeGap: " + timeGap);
 		String timeStr = null;
 		if (timeGap > YEAR) {
 			timeStr = timeGap / YEAR + "年前";

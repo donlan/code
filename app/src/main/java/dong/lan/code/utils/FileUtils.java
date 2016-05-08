@@ -16,7 +16,7 @@ import java.util.List;
 
 import dong.lan.code.Interface.onCodeLoadListener;
 import dong.lan.code.bean.Code;
-import dong.lan.code.db.DBManeger;
+import dong.lan.code.db.DBManager;
 
 /**
  * 项目：code
@@ -40,7 +40,7 @@ public class FileUtils {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             StringBuilder stringBuffer = new StringBuilder();
             dataTo.setEnabled(false);
-            List<Code> codes = DBManeger.getInstance().getAllCodes();
+            List<Code> codes = DBManager.getInstance().getAllCodes();
             if (codes == null) {
                 ToastUtil.Show(context,"没有保存的密码");
                 return;
@@ -123,7 +123,7 @@ public class FileUtils {
                                 }
                             }
                             for (Code code1 : codes1) {
-                                DBManeger.getInstance().saveDecodeCode(new Code(code1.getDes(), code1.getWord(), code1.getCount()));
+                                DBManager.getInstance().saveDecodeCode(new Code(code1.getDes(), code1.getWord(), code1.getCount()));
                             }
                             handler.sendEmptyMessage(FROM);
 
