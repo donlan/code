@@ -40,7 +40,6 @@ public class MyDrawView extends DrawerLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
-        if (BuildConfig.DEBUG) Log.d("MyDrawView", "e.getAction():" + e.getAction());
         switch (e.getAction())
         {
             case MotionEvent.ACTION_DOWN:
@@ -50,9 +49,9 @@ public class MyDrawView extends DrawerLayout {
             case MotionEvent.ACTION_UP:
                 x = x - e.getRawX();
                 y = y - e.getRawY();
-                if (BuildConfig.DEBUG) Log.d("MyDrawView", "x:" + x+"  y:"+y);
                 if(x > 15 && Math.abs(y)<10)
                 {
+                    open();
                     return true;
                 }
         }
