@@ -3,7 +3,10 @@ package dong.lan.code.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,12 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +32,10 @@ import dong.lan.code.Interface.OnNoteChangeListener;
 import dong.lan.code.MainActivity;
 import dong.lan.code.R;
 import dong.lan.code.activity.NoteAlarmActivity;
+import dong.lan.code.adapter.MyPagerAdapter;
 import dong.lan.code.adapter.NoteAdapter;
 import dong.lan.code.bean.Note;
-import dong.lan.code.db.DBManeger;
+import dong.lan.code.db.DBManager;
 import dong.lan.code.utils.AlarmUtils;
 import dong.lan.code.utils.DividerItemDecoration;
 import dong.lan.code.utils.TimeUtil;
@@ -96,7 +102,7 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
 
                 if (!searchText.getText().toString().equals("")) {
                     List<Note> c = new ArrayList<>();
-                    c = DBManeger.getInstance().getSeachNotes(searchText.getText().toString());
+                    c = DBManager.getInstance().getSearchNotes(searchText.getText().toString());
                     if (c != null) {
                         rAdapter.delAddAll(c);
                         recyclerView.setAdapter(rAdapter);
@@ -124,7 +130,7 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
 
             }
         });
-        List<Note> notes = DBManeger.getInstance().getAllNote();
+        List<Note> notes = DBManager.getInstance().getAllNote();
         if (notes == null || notes.isEmpty()) {
             Show("没有记事笔记 !!!");
             adapter = new NoteAdapter(getActivity(), null);
@@ -147,9 +153,9 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
     private void detailDialog(final Note n, final int pos) {
         MainActivity.LOCK_STATUS = false;
         Intent intent = new Intent(getActivity(), NoteAlarmActivity.class);
-        intent.putExtra("NOTE",n);
-        intent.putExtra("POS",pos);
-        startActivityForResult(intent,0);
+        intent.putExtra("NOTE", n);
+        intent.putExtra("POS", pos);
+        startActivityForResult(intent, 0);
 
     }
 
@@ -203,18 +209,18 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
         isCopy = false;
         if (note == null) {
             addDialog();
-        } else{
-            System.out.println(note.getNote());
+        } else {
             detailDialog(note, pos);
         }
     }
 
     @Override
     public void onNoteLongClick(Note note, final int pos) {
-        new AlertDialog.Builder(getActivity()).setTitle("选择你需要的操作")
+        dialog = new AlertDialog.Builder(getActivity()).setTitle("选择你需要的操作")
                 .setPositiveButton("闹钟提醒", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         pickerTime(adapter.getNoteAt(pos));
                     }
                 })
@@ -225,22 +231,80 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
                     }
                 }).show();
     }
+
     public void pickerTime(final Note info) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_picker_time, null);
-        final CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
-        final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+        final ViewPager pager = (ViewPager) view.findViewById(R.id.datePager);
+        final RadioButton dateText = (RadioButton) view.findViewById(R.id.bar_date);
+        final RadioButton timeText = (RadioButton) view.findViewById(R.id.bar_time);
+        dateText.setTextColor(Color.BLACK);
+        timeText.setTextColor(Color.WHITE);
+        View dateView = LayoutInflater.from(getActivity()).inflate(R.layout.view_date_picker, null);
+        View timeView = LayoutInflater.from(getActivity()).inflate(R.layout.view_time_picker, null);
+        final DatePicker datePicker = (DatePicker) dateView.findViewById(R.id.datePicker);
+        final TimePicker timePicker = (TimePicker) timeView.findViewById(R.id.timePicker);
+        List<View> views = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            datePicker.setMinDate(System.currentTimeMillis());
+        }
+        views.add(dateView);
+        views.add(timeView);
+        pager.setAdapter(new MyPagerAdapter(views));
+        pager.setCurrentItem(0);
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    dateText.setChecked(true);
+                    dateText.setTextColor(Color.BLACK);
+                    timeText.setTextColor(Color.WHITE);
+                } else {
+                    timeText.setChecked(true);
+                    dateText.setTextColor(Color.WHITE);
+                    timeText.setTextColor(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateText.setChecked(true);
+                dateText.setTextColor(Color.BLACK);
+                timeText.setTextColor(Color.WHITE);
+                pager.setCurrentItem(0);
+            }
+        });
+        timeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeText.setChecked(true);
+                dateText.setTextColor(Color.WHITE);
+                timeText.setTextColor(Color.BLACK);
+                pager.setCurrentItem(1);
+            }
+        });
         Button ok = (Button) view.findViewById(R.id.pick_ok);
-        final Date date = new Date(System.currentTimeMillis());
-        calendarView.setDate(date.getTime());
+        datePicker.setSpinnersShown(false);
         timePicker.setIs24HourView(true);
+        final Calendar calendar = Calendar.getInstance();
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                date.setHours(timePicker.getCurrentHour());
-                date.setMinutes(timePicker.getCurrentMinute());
-                long triggerTime = date.getTime() - System.currentTimeMillis();
-                if (triggerTime<=0) {
+                calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                        timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                long triggerTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+                if (triggerTime <= 0) {
                     Show("提醒时间不能设置在当前时间之前");
                     return;
                 }
@@ -262,11 +326,11 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==0 && resultCode==1){
+        if (requestCode == 0 && resultCode == 1) {
 
             Note note = data.getParcelableExtra("NOTE");
-            int pos = data.getIntExtra("POS",-1);
-            if(pos!=-1 && note!=null){
+            int pos = data.getIntExtra("POS", -1);
+            if (pos != -1 && note != null) {
                 if (isCopy)
                     rAdapter.updateNote(note.getTime(), note, pos);
                 else
