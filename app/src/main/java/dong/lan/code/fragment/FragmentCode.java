@@ -32,7 +32,7 @@ import dong.lan.code.MainActivity;
 import dong.lan.code.R;
 import dong.lan.code.adapter.MainRecycleAdapter;
 import dong.lan.code.bean.Code;
-import dong.lan.code.db.DBManeger;
+import dong.lan.code.db.DBManager;
 import dong.lan.code.utils.DividerItemDecoration;
 import dong.lan.code.utils.MyItemTouchHelper;
 
@@ -127,7 +127,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
             public void afterTextChanged(Editable p1) {
                 if (!searchText.getText().toString().equals("")) {
                     List<Code> c ;
-                    c = DBManeger.getInstance().getSeachCodes(searchText.getText().toString());
+                    c = DBManager.getInstance().getSearchCodes(searchText.getText().toString());
                     if (c != null) {
                         rAdapter.delAddAll(c);
                         recyclerView.setAdapter(rAdapter);
@@ -152,7 +152,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                 }
             }
         });
-        codes = DBManeger.getInstance().getAllCodes();
+        codes = DBManager.getInstance().getAllCodes();
         if (codes == null || codes.isEmpty()) {
             codes = new ArrayList<>();
             codeDataListener.onCodeDataGet(0, null);
