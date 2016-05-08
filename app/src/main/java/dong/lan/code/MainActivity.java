@@ -13,7 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -28,7 +28,7 @@ import dong.lan.code.Interface.onCodeLoadListener;
 import dong.lan.code.activity.BaseMainActivity;
 import dong.lan.code.adapter.MyViewPagerAdapter;
 import dong.lan.code.bean.Code;
-import dong.lan.code.db.DBManeger;
+import dong.lan.code.db.DBManager;
 import dong.lan.code.fragment.FragmentCode;
 import dong.lan.code.fragment.FragmentNote;
 import dong.lan.code.utils.FileUtils;
@@ -52,7 +52,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     private TextView lockHint;
     private RadioButton radioCode;
     private RadioButton radioNote;
-    private FrameLayout lockLayout;
+    private LinearLayout lockLayout;
     private List<Code> codes = new ArrayList<>();
     private List<Code> codes1;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -84,7 +84,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DBManeger.onInit(this);
+        DBManager.onInit(this);
         handler = new MyHandler();
         SharedPreferences preferences = this.getSharedPreferences("CODE_SP", MODE_PRIVATE);
 
@@ -114,7 +114,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         dataTo.setOnClickListener(this);
         findViewById(R.id.lockSwitcher).setOnClickListener(this);
         findViewById(R.id.reset_pass).setOnClickListener(this);
-        lockLayout = (FrameLayout) findViewById(R.id.lockLayout);
+        lockLayout = (LinearLayout) findViewById(R.id.lockLayout);
         radioCode = (RadioButton) findViewById(R.id.bar_code);
         radioNote = (RadioButton) findViewById(R.id.bar_note);
         radioNote.setOnClickListener(this);
@@ -261,9 +261,6 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
         if (!reset && pwd.equals(SPUtils.LockPWD())) {
             lockHint.setText("");
             lockLayout.setVisibility(View.GONE);
-        } else {
-            lockHint.setText("密码不对 ^_^ ");
-            return;
         }
         if (lock == 1) {
             reset = true;
