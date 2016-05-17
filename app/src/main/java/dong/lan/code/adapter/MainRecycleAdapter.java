@@ -40,8 +40,8 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         int fromCount = codes.get(fromPos).getCount();
         int toCount = codes.get(toPos).getCount();
 
-        codes.get(fromPos).setCount(toCount-1);
-        codes.get(toPos).setCount(fromCount+1);
+        codes.get(fromPos).setCount(toCount);
+        codes.get(toPos).setCount(fromCount);
 
         values.put(CodeDao.COLUMN_COUNT, codes.get(fromPos).getCount());
         DBManager.getInstance().updateCode(values, String.valueOf(codes.get(fromPos).getId()));
@@ -86,6 +86,8 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
     public MainRecycleAdapter(Context context, List<Code> codes) {
         this.context = context;
         this.codes = codes;
+        if(this.codes!=null)
+            CodeDao.minIndex = codes.get(0).getCount();
         inflater = LayoutInflater.from(context);
     }
 
@@ -154,7 +156,10 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         this.codes.addAll(codes);
     }
 
-
+    public void clear(){
+        if(codes!=null)
+            codes.clear();
+    }
     public void updateCode(int pos, Code code, String id) {
         ContentValues values = new ContentValues();
         values.put(CodeDao.COLUMN_COUNT, code.getCount());
