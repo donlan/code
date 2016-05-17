@@ -3,7 +3,10 @@ package dong.lan.code.bean;
 import android.support.annotation.NonNull;
 
 /**
- * Created by Dooze on 2015/9/20.
+ * 项目：  code
+ * 作者：  梁桂栋
+ * 日期：  2015/9/20  18:20.
+ * Email: 760625325@qq.com
  */
 public class Code implements Comparable<Code>{
     private int asyn;
@@ -83,7 +86,7 @@ public class Code implements Comparable<Code>{
     public int compareTo(@NonNull Code another) {
         if(this.getCount()>another.getCount())
         {
-            return -1;
+            return 1;
         }
         if(this.getCount()==another.getCount())
         {
@@ -91,7 +94,7 @@ public class Code implements Comparable<Code>{
         }
         if(this.getCount()<another.getCount())
         {
-            return 1;
+            return -1;
         }
         return 0;
     }
