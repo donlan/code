@@ -54,7 +54,7 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
     private RadioButton radioNote;
     private LinearLayout lockLayout;
     private List<Code> codes = new ArrayList<>();
-    private List<Code> codes1;
+    private List<Code> codes1 =new ArrayList<>();
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ViewPager viewPager;
 
@@ -311,11 +311,11 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
             switch (msg.what) {
                 case FileUtils.FROM:
                     if (codes1 == null || codes1.isEmpty()) {
-                        codeLoadListener.onCodeChange(4, null);
+                        codeLoadListener.onCodeChange(FileUtils.TO_DONE, null);
                         Show("没有数据导入");
                     } else {
                         codes = new ArrayList<>(codes1);
-                        codeLoadListener.onCodeChange(1, codes);
+                        codeLoadListener.onCodeChange(FileUtils.FROM, codes);
                         Show("导入完成");
                     }
                     dataFrom.setEnabled(true);
@@ -328,15 +328,15 @@ public class MainActivity extends BaseMainActivity implements View.OnClickListen
                     break;
                 case FileUtils.FROM_BAD:
                     Show("导入失败");
-                    codeLoadListener.onCodeChange(4, null);
+                    codeLoadListener.onCodeChange(FileUtils.TO_DONE, null);
                 case FileUtils.FROM_DONE:
                     dataFrom.setEnabled(true);
-                    codeLoadListener.onCodeChange(4, null);
+                    codeLoadListener.onCodeChange(FileUtils.TO_DONE, null);
                     break;
 
                 case FileUtils.TO_DONE:
                     dataTo.setEnabled(true);
-                    codeLoadListener.onCodeChange(4, null);
+                    codeLoadListener.onCodeChange(FileUtils.TO_DONE, null);
                     break;
             }
             super.handleMessage(msg);
