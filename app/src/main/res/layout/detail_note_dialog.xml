@@ -35,6 +35,7 @@
         <EditText
             android:id="@+id/dNote_des"
             style="@style/et_text_bg"
+            android:background="@color/md_grey_100"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/dNote_type"
