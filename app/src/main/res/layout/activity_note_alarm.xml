@@ -8,6 +8,8 @@
         app:navigationIcon="@android:drawable/ic_popup_reminder"
         android:background="@color/md_green_500"
         android:id="@+id/alarmBar"
+        android:titleTextColor="@color/md_white_1000"
+        app:titleTextColor="@color/md_white_1000"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
