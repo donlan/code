@@ -1,6 +1,7 @@
 package dong.lan.code.utils;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.os.Handler;
 import android.widget.TextView;
@@ -28,10 +29,9 @@ public class FileUtils {
     public static final int TO = 2;
     public static final int FROM_DONE = 3;
     public static final int TO_DONE = 4;
-    //    public static final int TO_START = 5;
-//    public static final int TO_BAD = 6;
     public static final int FROM_START = 7;
     public static final int FROM_BAD = 8;
+    public static final int FROM_GOOD = 5;
      /*
     导出数据到SD卡
      */
@@ -89,52 +89,71 @@ public class FileUtils {
     public static void dataFromSD(Context context, TextView dataFrom,final List<Code> codes1, onCodeLoadListener codeLoadListener,final File codeFile,final Handler handler) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             dataFrom.setEnabled(false);
-            codeLoadListener.onCodeChange(3, null);
+            codeLoadListener.onCodeChange(FROM_DONE, null);
             if (codeFile.exists()) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            handler.sendEmptyMessage(FROM_START);
-                            FileInputStream inputStream = new FileInputStream(codeFile);
-                            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                            String line ;
-                            int i = 0;
-                            Code code = null;
-                            while ((line = bufferedReader.readLine()) != null) {
-                                i++;
-                                if (i % 4 == 1) {
-                                    code = new Code();
-                                    code.setDes(line);
-                                }
-                                if (i % 4 == 2) {
-                                    assert code != null;
-                                    code.setWord(line);
+                final SQLiteDatabase db = DBManager.getInstance().getHelper().getWritableDatabase();
+                if(!db.isOpen()){
+                    ToastUtil.Show(context,"连接数据库出错");
+                    handler.sendEmptyMessage(FROM_DONE);
+                    return;
+                }
+                db.beginTransaction();
+                try {
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                DBManager.getInstance().clearCode(db);
+                                handler.sendEmptyMessage(FROM_START);
+                                FileInputStream inputStream = new FileInputStream(codeFile);
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                                String line;
+                                int i = 0;
+                                int index = 1;
+                                Code code = null;
+                                while ((line = bufferedReader.readLine()) != null) {
+                                    i++;
+                                    if (i % 4 == 1) {
+                                        code = new Code();
+                                        code.setDes(line);
+                                    }
+                                    if (i % 4 == 2) {
+                                        assert code != null;
+                                        code.setWord(line);
 
+                                    }
+                                    if (i % 4 == 3) {
+                                        assert code != null;
+                                        code.setOther(line);
+                                    }
+                                    if (i % 4 == 0) {
+                                        assert code != null;
+                                        code.setCount(index++);
+                                        codes1.add(code);
+                                    }
                                 }
-                                if (i % 4 == 3) {
-                                    assert code != null;
-                                    code.setOther(line);
+                                for (Code code1 : codes1) {
+                                    DBManager.getInstance().saveDecodeCode(db,new Code(code1.getDes(), code1.getWord(), code1.getCount()));
+                                    code1.setWord(AES.decode(code1.getWord()));
+                                    code1.setOther(AES.decode(code1.getOther()));
                                 }
-                                if (i % 4 == 0) {
-                                    assert code != null;
-                                    code.setCount(Integer.parseInt(line));
-                                    codes1.add(code);
-                                }
+                                handler.sendEmptyMessage(FROM);
+                                //db.setTransactionSuccessful();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                handler.sendEmptyMessage(FROM_BAD);
+
                             }
-                            for (Code code1 : codes1) {
-                                DBManager.getInstance().saveDecodeCode(new Code(code1.getDes(), code1.getWord(), code1.getCount()));
-                            }
-                            handler.sendEmptyMessage(FROM);
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            handler.sendEmptyMessage(FROM_BAD);
-
                         }
-                    }
-                });
-                thread.start();
+                    });
+                    thread.start();
+                }catch (Exception e){
+                    ToastUtil.Show(context,"读写数据的时候发生致命错误");
+                    handler.sendEmptyMessage(FROM_DONE);
+                    e.printStackTrace();
+                }finally {
+                    db.endTransaction();
+                }
             } else {
                 ToastUtil.Show(context,"没有已导出的文件");
                 handler.sendEmptyMessage(FROM_DONE);
