@@ -32,6 +32,7 @@ import dong.lan.code.MainActivity;
 import dong.lan.code.R;
 import dong.lan.code.adapter.MainRecycleAdapter;
 import dong.lan.code.bean.Code;
+import dong.lan.code.db.CodeDao;
 import dong.lan.code.db.DBManager;
 import dong.lan.code.utils.DividerItemDecoration;
 import dong.lan.code.utils.MyItemTouchHelper;
@@ -126,7 +127,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
             @Override
             public void afterTextChanged(Editable p1) {
                 if (!searchText.getText().toString().equals("")) {
-                    List<Code> c ;
+                    List<Code> c;
                     c = DBManager.getInstance().getSearchCodes(searchText.getText().toString());
                     if (c != null) {
                         rAdapter.delAddAll(c);
@@ -169,15 +170,15 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                 }
 
                 @Override
-                public void onItemLongClick(View view,final int pos, int type) {
+                public void onItemLongClick(View view, final int pos, int type) {
                     if (type == 0)
                         new AlertDialog.Builder(getActivity()).setMessage("确定删除吗？")
-                        .setPositiveButton("是的", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adapter.deleteCode(pos);
-                            }
-                        }).show();
+                                .setPositiveButton("是的", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        adapter.deleteCode(pos);
+                                    }
+                                }).show();
                     else {
                         ClipData clipData = ClipData.newPlainText("text", adapter.getCodeAt(pos).getWord());
                         clipboardManager.setPrimaryClip(clipData);
@@ -206,7 +207,7 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     private void DetailCode(final Code code, final int pos) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.detail_code_dialog,null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.detail_code_dialog, null);
         final EditText name = (EditText) view.findViewById(R.id.detail_code_name);
         final EditText detailCode = (EditText) view.findViewById(R.id.detail_code_pwd);
         final EditText other = (EditText) view.findViewById(R.id.detail_code_other);
@@ -265,11 +266,10 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
                             Show("密码不能为空");
                             return;
                         }
-                        int count = 1;
-                        if (codes != null && !codes.isEmpty()) {
-                            count = codes.get(0).getCount();
-                        }
-                        Code c = new Code(name.getText().toString(), code.getText().toString(), other.getText().toString(),count);
+                        Code c = new Code(name.getText().toString(),
+                                code.getText().toString(),
+                                other.getText().toString(),
+                                CodeDao.minIndex--);
                         c.setAsyn(0);
                         adapter.addCode(0, c);
                         recyclerView.scrollToPosition(0);
@@ -290,13 +290,15 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     3 本地导入的加载动画开始
     4 本地导入的加载动画关闭
      */
-        @Override
+    @Override
     public void onCodeChange(int Tag, List<Code> codes) {
         if (Tag == 0) {
             codeDataListener.onCodeDataGet(1, this.codes);
             loadingLayout.setVisibility(View.GONE);
         } else if (Tag == 1) {
+            adapter.clear();
             adapter.addAll(codes);
+            adapter.notifyDataSetChanged();
             loadingLayout.setVisibility(View.GONE);
         } else if (Tag == 2 && !searchText.getText().toString().equals("")) {
             searchText.setText("");

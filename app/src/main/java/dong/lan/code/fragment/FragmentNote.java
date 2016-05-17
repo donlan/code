@@ -132,7 +132,6 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
         });
         List<Note> notes = DBManager.getInstance().getAllNote();
         if (notes == null || notes.isEmpty()) {
-            Show("没有记事笔记 !!!");
             adapter = new NoteAdapter(getActivity(), null);
             recyclerView.setAdapter(adapter);
             adapter.setNoteItemClickListener(this);
