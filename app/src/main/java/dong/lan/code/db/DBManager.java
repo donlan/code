@@ -35,6 +35,9 @@ public class DBManager {
         return manager;
     }
 
+    public synchronized DBHelper getHelper(){
+        return helper;
+    }
     public synchronized  void saveNote(Note note)
     {
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -106,11 +109,24 @@ public class DBManager {
             db.update(NoteDao.TABLE_NAME,values,NoteDao.COLUMN_TIME+" = ?",new String[]{time});
         }
     }
+
+    public synchronized void clearCode(){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        if(db.isOpen()){
+            db.execSQL("delete from "+CodeDao.TABLE_NAME);
+        }
+    }
+
+    public synchronized void clearCode(SQLiteDatabase db){
+        if(db.isOpen()){
+            db.execSQL("delete from "+CodeDao.TABLE_NAME);
+        }
+    }
     public synchronized List<Code> getAllCodes()
     {
         SQLiteDatabase db = helper.getReadableDatabase();
 
-            Cursor cursor = db.query(CodeDao.TABLE_NAME, null, null, null, null, null, CodeDao.COLUMN_COUNT+" desc",null);
+            Cursor cursor = db.query(CodeDao.TABLE_NAME, null, null, null, null, null, CodeDao.COLUMN_COUNT+" asc",null);
             if(!cursor.moveToFirst())
             {
                 return  null;
@@ -186,11 +202,44 @@ public class DBManager {
         }
 
     }
+    public synchronized void saveCode(SQLiteDatabase db,Code code)
+    {
+
+        ContentValues values = new ContentValues();
+        values.put(CodeDao.COLUMN_CODE,code.getDes());
+        values.put(CodeDao.COLUNMN_WORD,AES.encode(code.getWord()));
+        values.put(CodeDao.COLUMN_COUNT,code.getCount());
+        values.put(CodeDao.COLUMN_OTHER,AES.encode(code.getOther()));
+        values.put(CodeDao.COLUMN_ASYN,code.getAsyn());
+        values.put(CodeDao.COLUMN_DES,(code.getDes()));
+        if(db.isOpen())
+        {
+            db.replace(CodeDao.TABLE_NAME,null,values);
+        }
+
+    }
 
     public synchronized void saveDecodeCode(Code code)
     {
 
         SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CodeDao.COLUMN_CODE,code.getDes());
+        values.put(CodeDao.COLUNMN_WORD,code.getWord());
+        values.put(CodeDao.COLUMN_COUNT,code.getCount());
+        values.put(CodeDao.COLUMN_OTHER,code.getOther());
+        values.put(CodeDao.COLUMN_ASYN,code.getAsyn());
+        values.put(CodeDao.COLUMN_DES,code.getDes());
+        if(db.isOpen())
+        {
+            db.replace(CodeDao.TABLE_NAME,null,values);
+        }
+
+    }
+
+    public synchronized void saveDecodeCode(SQLiteDatabase db,Code code)
+    {
+
         ContentValues values = new ContentValues();
         values.put(CodeDao.COLUMN_CODE,code.getDes());
         values.put(CodeDao.COLUNMN_WORD,code.getWord());
