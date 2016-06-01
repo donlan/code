@@ -1,56 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent_code"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="8dp"
+    app:contentPadding="12dp">
 
-    <TextView
-        android:id="@+id/code_des"
+    <LinearLayout
+        android:id="@+id/parent_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/tittle"
-        android:drawablePadding="10dp"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:textSize="18sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/code_code_word"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/password"
-        android:drawablePadding="10dp"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
+        <TextView
+            android:id="@+id/code_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/tittle"
+            android:drawablePadding="10dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/code_more"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/other"
-        android:drawablePadding="10dp"
-        android:gravity="center"
-        android:maxLines="5"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
+        <TextView
+            android:id="@+id/code_code_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/password"
+            android:drawablePadding="10dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
+        <TextView
+            android:id="@+id/code_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/other"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:maxLines="5"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
-</LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
