@@ -32,4 +32,5 @@
     <string name="contact">如有问题或建议请联系\nQQ：760625325</string>
     <string name="date">日期</string>
     <string name="time">时刻</string>
+    <string name="permision_deny_alert">密码的导入导出功能需要获得内存卡的读写权限，只有在你同意应用获取内存卡的读写权限，才能正常使用导入导出功能</string>
 </resources>
