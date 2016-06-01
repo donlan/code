@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,9 +37,9 @@ import dong.lan.code.adapter.NoteAdapter;
 import dong.lan.code.bean.Note;
 import dong.lan.code.db.DBManager;
 import dong.lan.code.utils.AlarmUtils;
-import dong.lan.code.utils.DividerItemDecoration;
 import dong.lan.code.utils.TimeUtil;
 import dong.lan.code.utils.ToastUtil;
+import dong.lan.code.view.RecycleViewDivider;
 
 /**
  * 项目：code
@@ -141,9 +141,9 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
             adapter.setNoteItemClickListener(this);
         }
         //设置布局管理
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setLayoutManager( new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL,16,
+                getResources().getColor(R.color.cardview_light_background)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
