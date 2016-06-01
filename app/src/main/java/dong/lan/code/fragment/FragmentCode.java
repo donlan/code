@@ -1,16 +1,24 @@
 package dong.lan.code.fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
@@ -20,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,8 +41,9 @@ import dong.lan.code.adapter.MainRecycleAdapter;
 import dong.lan.code.bean.Code;
 import dong.lan.code.db.CodeDao;
 import dong.lan.code.db.DBManager;
-import dong.lan.code.utils.DividerItemDecoration;
+import dong.lan.code.utils.FileUtils;
 import dong.lan.code.utils.MyItemTouchHelper;
+import dong.lan.code.view.RecycleViewDivider;
 
 /**
  * 项目：code
@@ -44,18 +52,21 @@ import dong.lan.code.utils.MyItemTouchHelper;
  */
 public class FragmentCode extends BaseFragment implements View.OnClickListener, onCodeLoadListener {
 
+
+    private static final int SDCARD_PERMISION_CODE = 1;
+
     private RecyclerView recyclerView;
     private List<Code> codes = new ArrayList<>();
     private MainRecycleAdapter adapter;
     private MainRecycleAdapter rAdapter;
     private EditText searchText;
-    private LinearLayout loadingLayout;
     private SwipeRefreshLayout refreshLayout;
     private boolean isSearch = false;
     private boolean resetAdapter = true;
     private ClipboardManager clipboardManager = null;
 
-    CodeDataListener codeDataListener;
+    private ProgressDialog progressDialog ;
+    private CodeDataListener codeDataListener;
     private MyItemTouchHelper callback;
 
     public void setCodeDataListener(CodeDataListener listenner) {
@@ -82,7 +93,6 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         recyclerView.setAdapter(adapter);
         final TextView addCode = (TextView) getView().findViewById(R.id.add_code);
         searchText = (EditText) getView().findViewById(R.id.search_et);
-        loadingLayout = (LinearLayout) getView().findViewById(R.id.loadingLayout);
         addCode.setOnClickListener(this);
         refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.code_swipe);
         refreshLayout.setColorSchemeResources(R.color.md_green_400, R.color.md_blue_400, R.color.md_yellow_400,
@@ -156,7 +166,16 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         codes = DBManager.getInstance().getAllCodes();
         if (codes == null || codes.isEmpty()) {
             codes = new ArrayList<>();
-            codeDataListener.onCodeDataGet(0, null);
+            if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getActivity(),
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        SDCARD_PERMISION_CODE);
+            } else {
+                codeDataListener.onCodeDataGet(0, null);
+            }
         } else {
             adapter = new MainRecycleAdapter(getActivity(), codes);
             recyclerView.setAdapter(adapter);
@@ -188,11 +207,9 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
             });
         }
         //设置布局管理
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
-        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        //设置分割线divider
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL,14,getResources().getColor(R.color.cardview_light_background)));
         //设置item的添加删除的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -294,21 +311,49 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     public void onCodeChange(int Tag, List<Code> codes) {
         if (Tag == 0) {
             codeDataListener.onCodeDataGet(1, this.codes);
-            loadingLayout.setVisibility(View.GONE);
-        } else if (Tag == 1) {
+            dismissLoading();
+        } else if (Tag == FileUtils.FROM) {
             adapter.clear();
             adapter.addAll(codes);
             adapter.notifyDataSetChanged();
-            loadingLayout.setVisibility(View.GONE);
-        } else if (Tag == 2 && !searchText.getText().toString().equals("")) {
+            dismissLoading();
+        } else if (Tag == FileUtils.TO && !searchText.getText().toString().equals("")) {
             searchText.setText("");
-        } else if (Tag == 3) {
-            loadingLayout.setVisibility(View.VISIBLE);
-        } else if (Tag == 4) {
-            loadingLayout.setVisibility(View.GONE);
+        } else if (Tag == FileUtils.FROM_DONE) {
+            showLoading("从内存卡导入备份数据...");
+        } else if (Tag == FileUtils.TO_DONE) {
+            dismissLoading();
         }
 
 
+    }
+
+
+    private void showLoading(String text){
+        if(progressDialog==null)
+            progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(text);
+        progressDialog.show();
+    }
+
+    private void dismissLoading(){
+        if(progressDialog!=null)
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == SDCARD_PERMISION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                codeDataListener.onCodeDataGet(0, null);
+            } else {
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.permision_deny_alert)
+                        .show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private Handler handler = new Handler() {
@@ -320,4 +365,10 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
         }
     };
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        progressDialog = null;
+    }
 }
