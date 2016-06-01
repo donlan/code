@@ -35,17 +35,20 @@
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_marginTop="58dp"
         android:id="@+id/code_swipe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginTop="58dp">
 
         <android.support.v7.widget.RecyclerView
+            android:padding="8dp"
+            android:scrollbars="none"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/activity_mainLinearLayout"
-            android:background="#ffffff" />
+            android:background="@android:color/white"
+            />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
@@ -61,22 +64,4 @@
         android:textColor="@color/md_white_1000"
         android:textSize="24sp" />
 
-
-    <LinearLayout
-        android:id="@+id/loadingLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:clickable="true"
-        android:gravity="center"
-        android:visibility="gone"
-        >
-
-        <ProgressBar
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:indeterminate="false"
-            android:indeterminateDrawable="@drawable/progressbar"
-            android:indeterminateDuration="400" />
-    </LinearLayout>
 </RelativeLayout>

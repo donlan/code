@@ -35,11 +35,14 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:padding="8dp"
+        android:scrollbars="none"
         android:id="@+id/note_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/activity_noteLinearLayout"
-        android:background="#ffffff" />
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/note_add"
