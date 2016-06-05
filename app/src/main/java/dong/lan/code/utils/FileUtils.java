@@ -36,13 +36,13 @@ public class FileUtils {
     导出数据到SD卡
      */
 
-    public static  void dataToSD(Context context, File codeFile,TextView dataTo) {
+    public static void dataToSD(Context context, File codeFile, TextView dataTo) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             StringBuilder stringBuffer = new StringBuilder();
             dataTo.setEnabled(false);
             List<Code> codes = DBManager.getInstance().getAllCodes();
             if (codes == null) {
-                ToastUtil.Show(context,"没有保存的密码");
+                ToastUtil.Show(context, "没有保存的密码");
                 return;
             }
             for (Code code : codes) {
@@ -58,26 +58,26 @@ public class FileUtils {
             try {
                 if (!codeFile.exists()) {
                     if (!codeFile.createNewFile()) {
-                        ToastUtil.Show(context,"创建导出文件失败");
+                        ToastUtil.Show(context, "创建导出文件失败");
                         dataTo.setEnabled(true);
                     }
                 }
-                ToastUtil.Show(context,"开始导出数据");
+                ToastUtil.Show(context, "开始导出数据");
                 FileWriter fileWriter = new FileWriter(codeFile);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write(stringBuffer.toString());
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 fileWriter.close();
-                ToastUtil.Show(context,"导出数据成功");
+                ToastUtil.Show(context, "导出数据成功");
                 dataTo.setEnabled(true);
             } catch (IOException e) {
                 e.printStackTrace();
-                ToastUtil.Show(context,"导出数据失败");
+                ToastUtil.Show(context, "导出数据失败");
                 dataTo.setEnabled(true);
             }
         } else {
-            ToastUtil.Show(context,"SD卡不存在");
+            ToastUtil.Show(context, "SD卡不存在");
             dataTo.setEnabled(true);
         }
     }
@@ -86,14 +86,14 @@ public class FileUtils {
     /*
    从SD卡导入数据
     */
-    public static void dataFromSD(Context context, TextView dataFrom,final List<Code> codes1, onCodeLoadListener codeLoadListener,final File codeFile,final Handler handler) {
+    public static void dataFromSD(Context context, TextView dataFrom, final List<Code> codes1, onCodeLoadListener codeLoadListener, final File codeFile, final Handler handler) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             dataFrom.setEnabled(false);
             codeLoadListener.onCodeChange(FROM_DONE, null);
             if (codeFile.exists()) {
                 final SQLiteDatabase db = DBManager.getInstance().getHelper().getWritableDatabase();
-                if(!db.isOpen()){
-                    ToastUtil.Show(context,"连接数据库出错");
+                if (!db.isOpen()) {
+                    ToastUtil.Show(context, "连接数据库出错");
                     handler.sendEmptyMessage(FROM_DONE);
                     return;
                 }
@@ -133,7 +133,11 @@ public class FileUtils {
                                     }
                                 }
                                 for (Code code1 : codes1) {
-                                    DBManager.getInstance().saveDecodeCode(db,new Code(code1.getDes(), code1.getWord(), code1.getCount()));
+                                    DBManager.getInstance().saveDecodeCode(db,
+                                            new Code(code1.getDes(),
+                                                    code1.getWord(),
+                                                    code1.getOther(),
+                                                    code1.getCount()));
                                     code1.setWord(AES.decode(code1.getWord()));
                                     code1.setOther(AES.decode(code1.getOther()));
                                 }
@@ -147,22 +151,22 @@ public class FileUtils {
                         }
                     });
                     thread.start();
-                }catch (Exception e){
-                    ToastUtil.Show(context,"读写数据的时候发生致命错误");
+                } catch (Exception e) {
+                    ToastUtil.Show(context, "读写数据的时候发生致命错误");
                     handler.sendEmptyMessage(FROM_DONE);
                     e.printStackTrace();
-                }finally {
+                } finally {
                     db.endTransaction();
                 }
             } else {
-                ToastUtil.Show(context,"没有已导出的文件");
+                ToastUtil.Show(context, "没有已导出的文件");
                 handler.sendEmptyMessage(FROM_DONE);
             }
         } else {
-            ToastUtil.Show(context,"SD卡不存在");
+            ToastUtil.Show(context, "SD卡不存在");
             handler.sendEmptyMessage(FROM_DONE);
             dataFrom.setEnabled(true);
         }
     }
-    
+
 }
