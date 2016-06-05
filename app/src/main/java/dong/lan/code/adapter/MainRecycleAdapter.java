@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -209,11 +208,9 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         private TextView des;
         private TextView word;
         private TextView other;
-        private LinearLayout parent;
 
         public CodeHolder(View itemView) {
             super(itemView);
-            parent = (LinearLayout) itemView.findViewById(R.id.parent_code);
             des = (TextView) itemView.findViewById(R.id.code_des);
             word = (TextView) itemView.findViewById(R.id.code_code_word);
             other = (TextView) itemView.findViewById(R.id.code_more);
