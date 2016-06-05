@@ -69,8 +69,8 @@ public class FragmentCode extends BaseFragment implements View.OnClickListener, 
     private CodeDataListener codeDataListener;
     private MyItemTouchHelper callback;
 
-    public void setCodeDataListener(CodeDataListener listenner) {
-        codeDataListener = listenner;
+    public void setCodeDataListener(CodeDataListener listener) {
+        codeDataListener = listener;
     }
 
     @Override
