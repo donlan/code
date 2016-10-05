@@ -41,7 +41,6 @@
         android:layout_marginTop="58dp">
 
         <android.support.v7.widget.RecyclerView
-            android:padding="8dp"
             android:scrollbars="none"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"

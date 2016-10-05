@@ -7,7 +7,5 @@ package dong.lan.code.Interface;
  */
 public interface ItemTouchListener {
         void onItemMoved(int fromPos, int toPos);
-
         void onItemSwiped(int pos);
-
 }

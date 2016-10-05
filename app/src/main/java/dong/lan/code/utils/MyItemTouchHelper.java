@@ -46,13 +46,13 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
 
-        touchListener.onItemMoved(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+        touchListener.onItemMoved(viewHolder.getPosition(),target.getPosition());
         return true;
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        touchListener.onItemSwiped(viewHolder.getAdapterPosition());
+        touchListener.onItemSwiped(viewHolder.getPosition());
     }
 
     @Override

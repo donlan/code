@@ -19,7 +19,10 @@ import dong.lan.code.db.NoteDao;
 import dong.lan.code.fragment.FragmentNote;
 
 /**
- * Created by Dooze on 2015/10/31.
+ * Created by 梁桂栋 on 2015/10/31 ： 下午5:41.
+ * Email:       760625325@qqcom
+ * GitHub:      github.com/donlan
+ * description: ${TEXT}
  */
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
 
@@ -55,9 +58,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
             public void onClick(View v) {
                 if (noteItemClickListener != null) {
                     if (noteHolder.note.getText().toString().equals(FragmentNote.NO_NOTE)) {
-                        noteItemClickListener.onNoteClick(null, noteHolder.getPosition());
+                        noteItemClickListener.onNoteClick(null, noteHolder.getLayoutPosition());
                     } else {
-                        noteItemClickListener.onNoteClick(notes.get(noteHolder.getPosition()), noteHolder.getPosition());
+                        noteItemClickListener.onNoteClick(notes.get(noteHolder.getLayoutPosition()), noteHolder.getPosition());
                     }
                 }
             }
@@ -65,7 +68,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         noteHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                noteItemClickListener.onNoteLongClick(notes.get(noteHolder.getPosition()),noteHolder.getPosition());
+                noteItemClickListener.onNoteLongClick(notes.get(noteHolder.getLayoutPosition()),noteHolder.getPosition());
                 return false;
             }
         });

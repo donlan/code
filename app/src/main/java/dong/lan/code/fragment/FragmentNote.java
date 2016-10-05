@@ -142,8 +142,7 @@ public class FragmentNote extends BaseFragment implements View.OnClickListener, 
         }
         //设置布局管理
         recyclerView.setLayoutManager( new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.VERTICAL,16,
-                getResources().getColor(R.color.cardview_light_background)));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,R.drawable.recycle_divider));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 

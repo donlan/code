@@ -35,7 +35,6 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:padding="8dp"
         android:scrollbars="none"
         android:id="@+id/note_recyclerView"
         android:layout_width="match_parent"

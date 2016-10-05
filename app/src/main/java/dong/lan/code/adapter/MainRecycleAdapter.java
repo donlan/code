@@ -107,13 +107,13 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
             codeHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(codeHolder.itemView, codeHolder.getPosition());
+                    onItemClickListener.onItemClick(codeHolder.itemView, codeHolder.getLayoutPosition());
                 }
             });
             codeHolder.word.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    onItemClickListener.onItemLongClick(codeHolder.itemView, codeHolder.getPosition(), 1);
+                    onItemClickListener.onItemLongClick(codeHolder.itemView, codeHolder.getLayoutPosition(), 1);
                     return false;
                 }
             });
@@ -209,7 +209,7 @@ public class MainRecycleAdapter extends RecyclerView.Adapter<MainRecycleAdapter.
         private TextView word;
         private TextView other;
 
-        public CodeHolder(View itemView) {
+         CodeHolder(View itemView) {
             super(itemView);
             des = (TextView) itemView.findViewById(R.id.code_des);
             word = (TextView) itemView.findViewById(R.id.code_code_word);
